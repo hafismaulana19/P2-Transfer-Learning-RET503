@@ -202,11 +202,41 @@ Extraction sebesar 5.658 ms. MobileNetV2 memiliki latency sebesar
 85.225 ms pada pengujian yang dibandingkan.
 
 Dengan demikian, accuracy dan latency perlu dipertimbangkan secara bersamaan.
-MobileNetV2 menunjukkan performa accuracy yang tinggi pada external test,
-sedangkan ResNet18 memberikan latency yang lebih rendah pada pengujian ini.
-Pemilihan model untuk aplikasi robotika sebaiknya disesuaikan dengan
-kebutuhan sistem, terutama apakah prioritas utama adalah **akurasi klasifikasi
-atau kecepatan inference**.
+**MobileNetV2 memberikan accuracy tertinggi sebesar 100.00%** pada external
+test, sedangkan **ResNet18 Training from Scratch memberikan latency terendah
+sebesar 0.638 ms**. Namun, Training from Scratch memiliki accuracy yang jauh
+lebih rendah, yaitu 75.00%.
+
+Sementara itu, **ResNet18 Partial Fine-Tuning memberikan keseimbangan yang
+lebih baik antara accuracy dan latency**, dengan accuracy sebesar 97.50% dan
+latency sebesar 0.673 ms. Oleh karena itu, apabila prioritas utama adalah
+akurasi, MobileNetV2 menjadi pilihan terbaik pada pengujian ini. Jika
+diperlukan kombinasi accuracy yang tinggi dan latency yang rendah, ResNet18
+Partial Fine-Tuning dapat menjadi pilihan yang lebih sesuai untuk aplikasi
+robotika.
+
+---
+
+
+## 💻 Environment Eksperimen
+
+Eksperimen dilakukan menggunakan environment berikut:
+
+| Komponen | Spesifikasi |
+|---|---|
+| GPU | NVIDIA GeForce RTX 4060 Laptop GPU |
+| OS | Windows |
+| Python | Python 3.x |
+| Framework | PyTorch |
+| Computer Vision | OpenCV |
+| Model | ResNet18, MobileNetV2 |
+| Pretrained Weights | ImageNet |
+| Hardware Acceleration | NVIDIA GPU |
+| Dataset | MG90S dan PCA9685 |
+
+GPU digunakan untuk mempercepat proses training model. Pengujian inference
+dan latency dilakukan sesuai konfigurasi eksperimen yang digunakan pada
+project ini.
 
 ---
 
