@@ -68,6 +68,7 @@ backbone untuk klasifikasi dua jenis komponen robot, yaitu MG90S dan PCA9685.
               ┌────────┴────────┐
               ▼                 ▼
            MG90S             PCA9685
+```
 
 
 ## 📊 Analisis Hasil ResNet18
@@ -184,21 +185,56 @@ Hasil akhir perbandingan model menunjukkan:
 | ResNet18 Partial Fine-Tuning | 97.50% | 0.673 ms |
 | ResNet18 Scratch | 75.00% | 0.638 ms |
 
-MobileNetV2 menghasilkan accuracy tertinggi, yaitu **100.00%** pada external
-test yang digunakan. Sementara itu, ResNet18 Feature Extraction dan Partial
-Fine-Tuning memperoleh accuracy **97.50%**.
+MobileNetV2 menghasilkan accuracy tertinggi, yaitu **100.00% pada external
+test** dengan 40 gambar. Namun, hasil tersebut perlu dipahami berdasarkan
+ukuran dataset external yang relatif kecil dan tidak dapat secara langsung
+digeneralisasikan ke seluruh kondisi lingkungan nyata.
 
-Training from Scratch memiliki latency paling rendah pada pengujian tersebut,
-tetapi accuracy-nya hanya **75.00%**. Oleh karena itu, latency yang rendah
-tidak selalu berarti model tersebut merupakan pilihan terbaik apabila
-accuracy menjadi prioritas utama.
+Pada eksperimen ResNet18, Feature Extraction dan Partial Fine-Tuning
+menghasilkan accuracy yang sama, yaitu **97.50%**. Sementara itu, Training
+from Scratch hanya mencapai **75.00%**. Hasil ini memperlihatkan bahwa
+penggunaan pretrained weights memberikan keuntungan pada dataset yang
+digunakan dibandingkan melatih model dari awal.
 
-Untuk aplikasi robotika, pemilihan model perlu mempertimbangkan trade-off
-antara accuracy dan inference latency. Model dengan accuracy tinggi lebih
-cocok apabila kesalahan klasifikasi harus diminimalkan, sedangkan model
-dengan latency rendah lebih sesuai apabila respons real-time menjadi
-prioritas utama.
+Dari sisi latency, **ResNet18 Scratch memiliki latency terendah sebesar
+0.638 ms**, diikuti oleh Partial Fine-Tuning sebesar 0.673 ms dan Feature
+Extraction sebesar 5.658 ms. MobileNetV2 memiliki latency sebesar
+85.225 ms pada pengujian yang dibandingkan.
 
-Berdasarkan hasil eksperimen project ini, **MobileNetV2 memberikan accuracy
-tertinggi**, sedangkan **ResNet18 Partial Fine-Tuning memberikan latency
-yang lebih rendah pada pengujian yang dilakukan**.
+Dengan demikian, accuracy dan latency perlu dipertimbangkan secara bersamaan.
+MobileNetV2 menunjukkan performa accuracy yang tinggi pada external test,
+sedangkan ResNet18 memberikan latency yang lebih rendah pada pengujian ini.
+Pemilihan model untuk aplikasi robotika sebaiknya disesuaikan dengan
+kebutuhan sistem, terutama apakah prioritas utama adalah **akurasi klasifikasi
+atau kecepatan inference**.
+
+---
+
+## ✅ Kesimpulan
+
+Berdasarkan seluruh eksperimen, penggunaan **transfer learning dengan
+pretrained weights** memberikan keuntungan dibandingkan **Training from
+Scratch** pada dataset klasifikasi MG90S dan PCA9685.
+
+Pada ResNet18, Feature Extraction dan Partial Fine-Tuning sama-sama mencapai
+**97.50% accuracy**, sedangkan Training from Scratch hanya mencapai
+**75.00%**. Hal ini menunjukkan bahwa fitur yang telah dipelajari dari
+ImageNet dapat membantu model memperoleh performa yang lebih baik pada dataset
+target.
+
+Pengujian external MobileNetV2 menghasilkan **100.00% accuracy** dari 40
+gambar, dengan seluruh gambar berhasil diklasifikasikan dengan benar.
+Pengujian kamera secara real-time juga menunjukkan bahwa model mampu
+mengenali MG90S dan PCA9685 dengan confidence yang tinggi pada kondisi
+pengujian.
+
+Namun, hasil external test dan camera test tetap perlu dipandang sebagai
+hasil pada kondisi pengujian yang digunakan. Performa model di lingkungan
+nyata dapat berubah akibat pencahayaan, posisi objek, jarak kamera, sudut
+pengambilan gambar, background, dan variasi objek.
+
+Secara keseluruhan, project ini menunjukkan bahwa **transfer learning dapat
+menjadi pendekatan yang efektif untuk klasifikasi komponen robot dengan
+dataset target yang relatif terbatas**, sementara pemilihan model untuk
+deployment perlu mempertimbangkan trade-off antara **accuracy, latency, dan
+kebutuhan real-time sistem robotika**.
